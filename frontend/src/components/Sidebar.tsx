@@ -1,37 +1,67 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
+import clsx from 'clsx';
 import SidebarItem from './SidebarItem';
 
-const Sidebar: React.FC = () => {
-  const [darkMode, setDarkMode] = useState(false);
+interface SidebarProps {
+  darkMode: boolean;
+  toggleDarkMode: () => void;
+}
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
-
+const Sidebar: React.FC<SidebarProps> = ({ darkMode, toggleDarkMode }) => {
   return (
-    <div className={`flex flex-col h-screen p-5 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}>
+    <div className={`flex flex-col h-screen p-5 ${darkMode ? 'bg-[#0a102a] text-white' : 'bg-white text-gray-900'}`}>
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <img src="/path/to/logo.png" alt="Logo" className="h-8 w-8" />
-          <span className="ml-2 mr-2 font-bold text-xl">Sisyphus</span>
+          <span className="ml-5 mr-5 font-bold text-xl text-blue-500">Sisyphus</span>
+          <button onClick={toggleDarkMode}>
+            {darkMode ? '🌙' : '🌞'}
+          </button>
         </div>
-        <button onClick={toggleDarkMode}>
-          {darkMode ? '🌙' : '🌞'}
-        </button>
       </div>
-      <div className="mt-10">
+      <div className="flex-grow mt-10">
         <NavLink
           to="/"
-          className={({ isActive }) => `sidebar-item ${isActive ? 'active' : ''}`}
+          className={({ isActive }) =>
+            clsx('sidebar-item flex items-center my-2 p-2 rounded cursor-pointer', {
+              'bg-gray-200 text-gray-800': !darkMode && isActive,
+              'bg-gray-600 text-gray-100': darkMode && isActive,
+              'dark:hover:bg-gray-800': darkMode,
+              'dark:hover:bg-gray-200': !darkMode
+            })
+          }
+
         >
           <SidebarItem title="Home" icon="🏠" />
         </NavLink>
         <NavLink
-          to="/reports"
-          className={({ isActive }) => `sidebar-item ${isActive ? 'active' : ''}`}
+          to="/reservarSala"
+          className={({ isActive }) =>
+            clsx('sidebar-item flex items-center my-2 p-2 rounded cursor-pointer', {
+              'bg-gray-200 text-gray-800': !darkMode && isActive,
+              'bg-gray-600 text-gray-100': darkMode && isActive,
+              'dark:hover:bg-gray-800': darkMode,
+              'dark:hover:bg-gray-200': !darkMode
+            })
+          }
+
         >
-          <SidebarItem title="Reports" icon="📊" />
+          <SidebarItem title="Reservar Sala" icon="💻" />
+        </NavLink>
+      </div>
+      <div className="mt-auto">
+        <NavLink
+          to="/login"
+          className={({ isActive }) =>
+            clsx('sidebar-item flex items-center my-2 p-2 rounded cursor-pointer', {
+              'bg-gray-200 text-gray-800': !darkMode && isActive,
+              'bg-gray-600 text-gray-100': darkMode && isActive,
+              'dark:hover:bg-gray-800': darkMode,
+              'dark:hover:bg-gray-200': !darkMode
+            })
+          }
+        >
+          <SidebarItem title="Sair da conta" icon="🚪" />
         </NavLink>
       </div>
     </div>
