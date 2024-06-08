@@ -10,11 +10,7 @@ const Home: React.FC<HomeProps> = ({ darkMode }) => {
     { title: 'Sala 1', description: 'Descrição da Sala 1', icon: '🏢' },
     { title: 'Sala 2', description: 'Descrição da Sala 2', icon: '🏢' },
     { title: 'Sala 3', description: 'Descrição da Sala 3', icon: '🏢' },
-    { title: 'Sala 1', description: 'Descrição da Sala 1', icon: '🏢' },
-    { title: 'Sala 2', description: 'Descrição da Sala 2', icon: '🏢' },
-    { title: 'Sala 3', description: 'Descrição da Sala 3', icon: '🏢' },
-    { title: 'Sala 4', description: 'Descrição da Sala 4', icon: '🏢' },
-    { title: 'Sala 4', description: 'Descrição da Sala 4', icon: '🏢' },
+
 
     // Adicione mais cartões conforme necessário
   ];
