@@ -1,10 +1,24 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+
+interface FormData {
+  reservationId: string;
+  roomName: string;
+  roomImage: File | null; // Suportar arquivos
+  roomLocation: string;
+  dateOfUse: string;
+  startTime: string;
+  endTime: string;
+  responsiblePerson: string;
+  reasonForUse: string;
+  additionalInfo: string;
+  guests: string;
+}
 
 const ReservarSala: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     reservationId: '',
     roomName: '',
-    roomImage: '',
+    roomImage: null,
     roomLocation: '',
     dateOfUse: '',
     startTime: '',
@@ -15,18 +29,52 @@ const ReservarSala: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
     guests: ''
   });
 
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+
+    if (e.target instanceof HTMLInputElement && e.target.type === 'file') {
+      // Se o input é um file input e possui arquivos selecionados
+      const files = (e.target as HTMLInputElement).files;
+      if (files && files.length > 0) {
+        setFormData((prevState) => ({
+          ...prevState,
+          [name]: files[0] // Armazena o arquivo diretamente no estado
+        }));
+      }
+    } else {
+      // Para todos os outros inputs
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value
+      }));
+    }
   };
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
-    // Lógica adicional aqui (por exemplo, enviar dados para o backend)
+
+    try {
+      const response = await fetch('http://localhost:3000/sala/reservar', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      console.log(response)
+      if (response.ok) {
+        const result = await response.text(); // Trata a resposta como texto
+        alert(result); // Exibe a resposta do servidor
+      } else {
+        alert('Falha ao reservar a sala. Tente novamente.');
+      }
+    } catch (error) {
+      console.error('Erro ao reservar sala:', error);
+      alert('Erro ao reservar a sala. Tente novamente mais tarde.');
+    }
   };
 
   return (
@@ -35,16 +83,6 @@ const ReservarSala: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
 
       <div className="grid grid-cols-2 gap-4 ">
         <form onSubmit={handleSubmit} className='flex flex-col gap-4 '>
-          <label htmlFor="reservationId">ID da Reserva:</label>
-          <input
-            type="text"
-            id="reservationId"
-            name="reservationId"
-            value={formData.reservationId}
-            onChange={handleChange}
-            className={`w-full p-2 border rounded-md mt-1 ${darkMode ? 'bg-[#17203f] border-transparent' : ''}`}
-          />
-
           <label htmlFor="roomName">Nome da Sala:</label>
           <input
             type="text"
@@ -61,9 +99,10 @@ const ReservarSala: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
             id="roomImage"
             name="roomImage"
             accept="image/*"
-            onChange={handleChange} // Adicione a lógica necessária para lidar com a seleção de arquivo
+            onChange={handleChange}
             className={`w-full p-2 border rounded-md mt-1 ${darkMode ? 'bg-[#17203f] border-transparent' : ''}`}
           />
+
           <label htmlFor="roomLocation">Local da Sala:</label>
           <input
             type="text"
@@ -83,6 +122,7 @@ const ReservarSala: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
             onChange={handleChange}
             className={`w-full p-2 border rounded-md mt-1 ${darkMode ? 'bg-[#17203f] border-transparent' : ''}`}
           />
+
           <label htmlFor="startTime">Hora Início do uso:</label>
           <input
             type="time"
@@ -92,6 +132,7 @@ const ReservarSala: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
             onChange={handleChange}
             className={`w-full p-2 border rounded-md mt-1 ${darkMode ? 'bg-[#17203f] border-transparent' : ''}`}
           />
+
           <label htmlFor="endTime">Hora Final do uso:</label>
           <input
             type="time"
@@ -104,8 +145,6 @@ const ReservarSala: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
         </form>
 
         <form onSubmit={handleSubmit} className='flex flex-col gap-4 '>
-
-
           <label htmlFor="responsiblePerson">Responsável pelo uso:</label>
           <input
             type="text"
