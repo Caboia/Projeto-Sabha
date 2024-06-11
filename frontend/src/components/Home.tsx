@@ -24,7 +24,9 @@ const Home: React.FC<HomeProps> = ({ darkMode }) => {
   useEffect(() => {
     const fetchCardsData = async () => {
       try {
-        const response = await fetch('http://50.19.165.167:3000/sala');
+        // Obtendo o IP salvo localmente
+        const ip = localStorage.getItem('ip') || 'localhost';
+        const response = await fetch(`http://${ip}:3000/sala`); // Usando o IP salvo localmente
         if (response.ok) {
           const data = await response.json();
           setCardsData(data);
@@ -41,7 +43,9 @@ const Home: React.FC<HomeProps> = ({ darkMode }) => {
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`http://50.19.165.167:3000/sala/deletar/${id}`, {
+      // Obtendo o IP salvo localmente
+      const ip = localStorage.getItem('ip') || 'localhost';
+      const response = await fetch(`http://${ip}:3000/sala/deletar/${id}`, {
         method: 'DELETE',
       });
       if (response.ok) {
@@ -60,6 +64,7 @@ const Home: React.FC<HomeProps> = ({ darkMode }) => {
   const filteredCardsData = cardsData
     .filter(sala => sala.roomName.toLowerCase().includes(searchTerm.toLowerCase()))
     .sort((a, b) => new Date(a.dateOfUse).getTime() - new Date(b.dateOfUse).getTime());
+
 
   return (
     <div className={`p-6 ${darkMode ? 'text-white' : 'bg-gray-100 text-gray-900'} h-screen overflow-hidden`}>

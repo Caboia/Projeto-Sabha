@@ -27,6 +27,8 @@ const AtualizarSala: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
     guests: ''
   });
 
+  const [ip, setIp] = useState(localStorage.getItem('ip') || ''); // Adicionando o estado para armazenar o IP
+
   // Função para atualizar a sala
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +37,7 @@ const AtualizarSala: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
     const roomId = urlParams.get('id');
 
     try {
-      const response = await fetch(`http://50.19.165.167:3000/sala/atualizar/${roomId}`, {
+      const response = await fetch(`http://${ip}:3000/sala/atualizar/${roomId}`, { // Usando o IP salvo localmente
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -75,6 +77,7 @@ const AtualizarSala: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
       }));
     }
   };
+
 
   return (
     <div className={`p-4 mt-5 rounded min-h-[95%] ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>

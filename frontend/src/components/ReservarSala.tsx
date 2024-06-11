@@ -56,7 +56,9 @@ const ReservarSala: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://50.19.165.167:3000/sala/reservar', {
+      // Obtendo o IP salvo localmente
+      const ip = localStorage.getItem('ip') || 'localhost';
+      const response = await fetch(`http://${ip}:3000/sala/reservar`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
