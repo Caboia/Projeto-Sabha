@@ -35,7 +35,7 @@ const AtualizarSala: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
     const roomId = urlParams.get('id');
 
     try {
-      const response = await fetch(`http://localhost:3000/sala/atualizar/${roomId}`, {
+      const response = await fetch(`http://50.19.165.167:3000/sala/atualizar/${roomId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

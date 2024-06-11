@@ -24,7 +24,7 @@ const Home: React.FC<HomeProps> = ({ darkMode }) => {
   useEffect(() => {
     const fetchCardsData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/sala');
+        const response = await fetch('http://50.19.165.167:3000/sala');
         if (response.ok) {
           const data = await response.json();
           setCardsData(data);
@@ -41,7 +41,7 @@ const Home: React.FC<HomeProps> = ({ darkMode }) => {
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:3000/sala/deletar/${id}`, {
+      const response = await fetch(`http://50.19.165.167:3000/sala/deletar/${id}`, {
         method: 'DELETE',
       });
       if (response.ok) {
