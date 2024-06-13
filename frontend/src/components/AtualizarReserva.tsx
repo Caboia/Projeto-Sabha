@@ -27,7 +27,11 @@ const AtualizarSala: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
     guests: ''
   });
 
+<<<<<<< HEAD
   const [ip] = useState(localStorage.getItem('ip') || ''); // Adicionando o estado para armazenar o IP
+=======
+  const [ip, setIp] = useState(localStorage.getItem('ip') || ''); // Adicionando o estado para armazenar o IP
+>>>>>>> c5a3bb762dda5eaca9155f994e197da8d4f88641
 
   // Função para atualizar a sala
   const handleUpdate = async (e: React.FormEvent) => {

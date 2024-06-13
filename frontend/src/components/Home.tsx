@@ -71,6 +71,7 @@ const Home: React.FC<HomeProps> = ({ darkMode }) => {
     .filter(sala => sala.roomName.toLowerCase().includes(searchTerm.toLowerCase()))
     .sort((a, b) => new Date(a.dateOfUse).getTime() - new Date(b.dateOfUse).getTime());
 
+
   return (
     <div className={`p-6 ${darkMode ? 'text-white' : 'bg-gray-100 text-gray-900'} h-screen overflow-hidden`}>
       <h1 className="text-3xl font-bold mb-6">Salas Reservadas</h1>
