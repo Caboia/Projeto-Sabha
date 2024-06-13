@@ -5,7 +5,7 @@ interface CardProps {
   id: number;
   title: string;
   description: string;
-  icon: string;
+  icon: string; // Alterado para string para receber a URL da imagem
   darkMode: boolean;
   location: string;
   dateOfUse: string;
@@ -15,15 +15,30 @@ interface CardProps {
   onDelete: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ id, title, description, icon, darkMode, location, dateOfUse, startTime, endTime, responsiblePerson, onDelete }) => {
-
+const Card: React.FC<CardProps> = ({
+  id,
+  title,
+  description,
+  icon,
+  darkMode,
+  location,
+  dateOfUse,
+  startTime,
+  endTime,
+  responsiblePerson,
+  onDelete
+}) => {
   const handleDelete = () => {
     onDelete();
   };
 
   return (
     <div className={`flex items-center gap-4 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ${darkMode ? 'bg-[#0a102a] text-white' : 'bg-white text-black'}`}>
-      {icon && <img src={icon} alt={title} className="w-12 h-12 rounded-full" />}
+      {icon ? (
+        <img src={icon} alt={title} className="w-36 h-36 " />
+      ) : (
+        <div className="w-12 h-12 rounded-full bg-gray-300"></div>
+      )}
       <div className='flex gap-12'>
         <div>
           <h2 className="text-xl font-semibold mb-2">{title}</h2>

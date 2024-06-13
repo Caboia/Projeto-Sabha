@@ -10,7 +10,7 @@ interface Sala {
   id: number;
   roomName: string;
   additionalInfo: string;
-  roomImage: string;
+  roomImage: string; // Assume-se que roomImage é uma string contendo a URL da imagem
   dateOfUse: string;
   startTime: string;
   endTime: string;
@@ -21,13 +21,21 @@ const Home: React.FC<HomeProps> = ({ darkMode }) => {
   const [cardsData, setCardsData] = useState<Sala[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
+
   useEffect(() => {
     const fetchCardsData = async () => {
       try {
-        const response = await fetch('http://50.19.165.167:3000/sala');
+        // Obtendo o IP salvo localmente
+        const ip = localStorage.getItem('ip') || 'localhost';
+        const response = await fetch(`http://${ip}:3000/sala`); // Usando o IP salvo localmente
         if (response.ok) {
           const data = await response.json();
-          setCardsData(data);
+          // Verifique se cada objeto de sala tem a URL completa da imagem
+          const updatedData = data.map((sala: Sala) => ({
+            ...sala,
+            roomImage: `/uploads/${sala.roomImage}`, // Substitua pela rota correta do backend
+          }));
+          setCardsData(updatedData);
         } else {
           console.error('Erro ao buscar dados das salas:', response.status);
         }
@@ -41,7 +49,9 @@ const Home: React.FC<HomeProps> = ({ darkMode }) => {
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`http://50.19.165.167:3000/sala/deletar/${id}`, {
+      // Obtendo o IP salvo localmente
+      const ip = localStorage.getItem('ip') || 'localhost';
+      const response = await fetch(`http://${ip}:3000/sala/deletar/${id}`, {
         method: 'DELETE',
       });
       if (response.ok) {
@@ -83,9 +93,9 @@ const Home: React.FC<HomeProps> = ({ darkMode }) => {
               responsiblePerson={sala.responsiblePerson}
               id={sala.id}
               key={sala.id}
-              title={sala.roomName}
+              title={sala.roomName} // Título do card pode ser o nome da sala
               description={sala.additionalInfo}
-              icon={sala.roomImage}
+              icon={sala.roomImage} // Ícone do card é a imagem da sala (URL da imagem)
               darkMode={darkMode}
               onDelete={() => handleDelete(sala.id)}
             />
