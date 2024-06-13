@@ -43,19 +43,7 @@ const ReservarSala: React.FC<{ darkMode: boolean }> = ({ darkMode }) => {
     e.preventDefault();
 
     try {
-<<<<<<< HEAD
       const ip = localStorage.getItem('ip') || 'localhost';
-=======
-      // Obtendo o IP salvo localmente
-      const ip = localStorage.getItem('ip') || 'localhost';
-      const response = await fetch(`http://${ip}:3000/sala/reservar`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
->>>>>>> c5a3bb762dda5eaca9155f994e197da8d4f88641
 
       if (formData.roomImage) {
         const imageFormData = new FormData();
